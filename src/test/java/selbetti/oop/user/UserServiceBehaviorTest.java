@@ -39,4 +39,14 @@ public class UserServiceBehaviorTest {
 		final User user = userService.retrieveUser( 1 );
 		assertEquals( "Test2", user.getName() );
 	}
+	
+	@Test
+	public void ensureThatCanSearchForUsersByName(){
+		final UserService userService = new UserService();
+		for ( int i=0; i<10; i++ )
+			userService.insertUser( new User( "Test" + i, "test@te.st" ) );
+		
+		List<User> foundUsers = userService.searchByName( "Test" );
+		assertEquals( 10, foundUsers.size() );
+	}
 }
