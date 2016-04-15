@@ -3,6 +3,7 @@ package selbetti.oop.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,7 +13,7 @@ public class UserServiceBehaviorTest {
 	@Test
 	public void ensureThatCanRetrieveAllUsers() {
 		final UserService userService = new UserService();
-		final List<User> users = userService.retrieveAllUsers();
+		final Collection<User> users = userService.retrieveAllUsers();
 		assertNotNull( users );
 		assertEquals( 0, users.size() );
 	}
@@ -39,14 +40,15 @@ public class UserServiceBehaviorTest {
 		final User user = userService.retrieveUser( 1 );
 		assertEquals( "Test2", user.getName() );
 	}
-	
+
 	@Test
-	public void ensureThatCanSearchForUsersByName(){
+	public void ensureThatCanSearchForUsersByName() {
 		final UserService userService = new UserService();
-		for ( int i=0; i<10; i++ )
+		for ( int i = 0; i < 10; i++ )
 			userService.insertUser( new User( "Test" + i, "test@te.st" ) );
-		
-		List<User> foundUsers = userService.searchByName( "Test" );
+
+		final List<User> foundUsers = userService.searchByName( "Test" );
 		assertEquals( 10, foundUsers.size() );
 	}
+
 }

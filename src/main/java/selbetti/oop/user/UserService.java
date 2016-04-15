@@ -1,39 +1,38 @@
 package selbetti.oop.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class UserService {
 
-	final List<User> users;
-
-	public UserService() {
-		users = new ArrayList<>();
-	}
+	final AtomicLong idGenerator = new AtomicLong();
+	final Map<Long, User> users = new HashMap<>();
 
 	public List<User> retrieveAllUsers() {
-		return users;
+		return new ArrayList<>( users.values() );
 	}
 
 	public void insertUser( User user ) {
-		users.add( user );
+		user = user.withId( idGenerator.incrementAndGet() );
+		users.put( user.getId(), user );
 	}
 
-	public void updateUser( int i, User user ) {
-		// TODO Auto-generated method stub
-
+	public void updateUser( long i, User user ) {
+		user = user.withId( i );
+		users.put( i, user );
 	}
 
-	public User retrieveUser( int i ) {
-		// TODO Auto-generated method stub
-		return null;
+	public User retrieveUser( long i ) {
+		return users.get( i );
 	}
 
 	public List<User> searchByName( String string ) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
