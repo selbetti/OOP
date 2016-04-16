@@ -1,5 +1,9 @@
 package selbetti.oop.big;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +14,17 @@ import lombok.Setter;
 public class Request {
 
 	String name;
-	String date;
+	Date date;
 
-	public static Request loadObject( String line ) {
+	public static Request loadObject( String line ) throws ParseException {
 		try {
 			final String[] dados = line.split( " " );
-			String nome = dados[11];
-			nome = nome.substring( 7, nome.indexOf( '"' ) );
-			return new Request( nome, dados[3] );
-		} catch ( final Exception e ) {
+			String nome = dados[12];
+			final Date data = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSSSS" ).parse( dados[3].replace( "[", "" ).trim() + " "
+					+ dados[4] );
+			nome = nome.substring( nome.indexOf( "=" ) + 1, nome.lastIndexOf( '"' ) );
+			return new Request( nome, data );
+		} catch ( final ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException e ) {
 			return null;
 		}
 	}
