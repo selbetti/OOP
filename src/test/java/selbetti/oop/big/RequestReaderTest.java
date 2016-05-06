@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import java.io.File;
 import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import org.junit.Test;
 
@@ -26,14 +27,33 @@ public class RequestReaderTest {
 
 	@Test
 	public void ensureThatCanReadTheEntireFile() throws ParseException {
-		final AtomicInteger cont = new AtomicInteger( 0 );
-		file.readEntireFile( r ->
-				cont.incrementAndGet()
-				);
-
-		assertEquals( cont.get(), 10 );
+		final RequestReaderListener<Request> mock = mock( RequestReaderListener.class );
+		file.readEntireFile( mock );
+		verify( mock, times( 10 ) ).accept( any() );
 	}
-	
-	@Test 
-	public void ensureThatCanReadTwoFixedLine
+
+	@Test
+	public void ensureThatCanReadTwoFixedLine() throws ParseException {
+		final RequestReader file = new RequestReader( new File( "src/test/resources/file2lines.txt" ) );
+		final RequestReaderListener<Request> mock = mock( RequestReaderListener.class );
+		file.readEntireFile( mock );
+		verify( mock, times( 2 ) ).accept( any() );
+	}
+
+	@Test
+	public void ensureThatCanReadEmptyFile() throws ParseException {
+		final RequestReader file = new RequestReader( new File( "src/test/resources/emptyFile.txt" ) );
+		final RequestReaderListener<Request> mock = mock( RequestReaderListener.class );
+		file.readEntireFile( mock );
+		verify( mock, never() ).accept( any() );
+	}
+
+	@Test
+	public void ensureThatReceivedFinishEvent() throws ParseException
+	{
+		final RequestReader file = new RequestReader( new File( "src/test/resources/emptyFile.txt" ) );
+		final RequestReaderListener<Request> mock = mock( RequestReaderListener.class );
+		file.readEntireFile( mock );
+		verify( mock ).finish();
+	}
 }

@@ -33,10 +33,12 @@ public class RequestReader {
 		}
 	}
 
-	public void readEntireFile( Consumer<Request> requestConsumer ) throws ParseException {
+	public void readEntireFile( RequestReaderListener<Request> requestConsumer ) throws ParseException {
 		Request request = null;
 		while ( ( request = readRequest() ) != null )
 			requestConsumer.accept( request );
+
+		requestConsumer.finish();
 	}
 
 }

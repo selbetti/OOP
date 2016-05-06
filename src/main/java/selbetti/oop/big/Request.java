@@ -15,6 +15,7 @@ public class Request {
 
 	String name;
 	Date date;
+	String line;
 
 	public static Request loadObject( String line ) throws ParseException {
 		try {
@@ -23,7 +24,7 @@ public class Request {
 			final Date data = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSSSS" ).parse( dados[3].replace( "[", "" ).trim() + " "
 					+ dados[4] );
 			nome = nome.substring( nome.indexOf( "=" ) + 1, nome.lastIndexOf( '"' ) );
-			return new Request( nome, data );
+			return new Request( nome, data, line );
 		} catch ( final ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException e ) {
 			return null;
 		}

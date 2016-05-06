@@ -1,7 +1,30 @@
 package selbetti.oop.big;
 
-public interface RequestGrouper {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
-	void onReadRequest( Request request );
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+public class RequestGrouper implements RequestReaderListener<Request> {
+
+	Map<String, List<Request>> data = new HashMap<>();
+
+	final RequestWriter rWriter;
+
+	@Override
+	public void accept( Request req ) {
+		data.computeIfAbsent( req.getName(), ( s ) -> new ArrayList<>() )
+				.add( req );
+	}
+
+	@Override
+	public void finish() {
+
+		data.forEach( rWriter::sortAndWrite );
+	}
 }
