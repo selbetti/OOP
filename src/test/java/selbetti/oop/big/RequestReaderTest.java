@@ -23,6 +23,7 @@ public class RequestReaderTest {
 		assertNotNull( req );
 		assertEquals( "4d39a692-dc6f-11e3-8db0-a41731050d2d", req.name );
 		assertEquals( 1460760669332L, req.date.getTime() );
+		assertEquals( 2148L, req.timeRequest );
 	}
 
 	@Test

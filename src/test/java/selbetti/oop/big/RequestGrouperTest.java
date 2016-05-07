@@ -14,11 +14,11 @@ import org.junit.Test;
 public class RequestGrouperTest {
 
 	final List<Request> requestListUser1 = Arrays.asList(
-			new Request( "1", null, null ),
-			new Request( "1", null, null ) );
+			new Request( "1", null, null, 0 ),
+			new Request( "1", null, null, 0 ) );
 
 	final List<Request> requestListUser2 = Arrays.asList(
-			new Request( "2", null, null ) );
+			new Request( "2", null, null, 0 ) );
 
 	final List<Request> requestListAllUsers = new ArrayList<>();
 

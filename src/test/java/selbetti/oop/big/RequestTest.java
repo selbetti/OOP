@@ -1,10 +1,8 @@
 package selbetti.oop.big;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 
@@ -21,6 +19,7 @@ public class RequestTest {
 		assertNotNull( "objeto carregado nao pode ser nulo", r );
 		assertEquals( 1460760669332L, r.date.getTime() );
 		assertEquals( "4d39a692-dc6f-11e3-8db0-a41731050d2d", r.name );
+		assertEquals( 2148L, r.timeRequest );
 	}
 
 	@Test
