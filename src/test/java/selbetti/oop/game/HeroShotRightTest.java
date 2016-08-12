@@ -1,14 +1,10 @@
 package selbetti.oop.game;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import lombok.val;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +64,4 @@ public class HeroShotRightTest {
 		assertTrue( "Hero morreu", heroes.get( 0 ).isAlive );
 		assertTrue( "Hero morreu", heroes.get( 1 ).isAlive );
 	}
-
-
-
 }

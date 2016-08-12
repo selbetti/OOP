@@ -1,7 +1,6 @@
 package selbetti.oop.game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -141,5 +140,4 @@ public class Board {
 		if(foundedHero != null)
 			foundedHero.isAlive = false;
 	}
-
 }
