@@ -18,13 +18,13 @@ public class Board {
 	static final int LEFT = Directions.values().length - 1;
 	static final int RIGHT = 1;
 
-	final List<Hero> lstHeroes;
+	final List<Hero> heroes;
 	final int width;
 	final int height;
 	final int movimentLimit;
 
 	public void actionHero( HeroActions action, int id ) {
-		val hero = lstHeroes.get( id );
+		val hero = heroes.get( id );
 		switch ( action ) {
 			case Move: move( hero ); break;
 			case RotateLeft: rotate( hero, LEFT ); break;
@@ -39,16 +39,16 @@ public class Board {
 		switch ( hero.headAngle )
 		{
 			case Right:
-				shootEnemy( hero, h -> ( h.positionY == hero.positionY && h.positionX > hero.positionX ),  this::compareByRow  );
+				shootEnemy(  h -> ( h.positionY == hero.positionY && h.positionX > hero.positionX ),  this::compareByRow  );
 			break;
 			case Left:
-				shootEnemy( hero, h -> ( h.positionY == hero.positionY && h.positionX < hero.positionX ), this::compareByRowReverse );
+				shootEnemy(  h -> ( h.positionY == hero.positionY && h.positionX < hero.positionX ), this::compareByRowReverse );
 			break;
 			case Down:
-				shootEnemy( hero, h -> ( h.positionX == hero.positionX && h.positionY > hero.positionY ), this::compareByRow );
+				shootEnemy(  h -> ( h.positionX == hero.positionX && h.positionY > hero.positionY ), this::compareByRow );
 			break;
 			case Up:
-				shootEnemy( hero, h -> ( h.positionX == hero.positionX && h.positionY < hero.positionY ), this::compareByRowReverse );
+				shootEnemy(  h -> ( h.positionX == hero.positionX && h.positionY < hero.positionY ), this::compareByRowReverse );
 			break;
 			default:
 				throw new UnsupportedOperationException( hero.headAngle.toString() );
@@ -57,7 +57,7 @@ public class Board {
 
 
 	private List<Hero> orderList( Comparator<Hero> compare ) {
-		val result = new ArrayList<>( lstHeroes );
+		val result = new ArrayList<>(heroes);
 		result.sort( compare );
 		return result;
 	}
@@ -105,7 +105,7 @@ public class Board {
 		final int newX = hero.positionX + moviment;
 		if ( newX >= 0 && newX < width )
 		{
-			final Hero foundedHero = find( lstHeroes, h -> h.positionX == newX && h.positionY == hero.positionY );
+			final Hero foundedHero = find(heroes, h -> h.positionX == newX && h.positionY == hero.positionY );
 			if ( foundedHero == null )
 				return newX;
 		}
@@ -117,7 +117,7 @@ public class Board {
 		final int newY = hero.positionY + moviment;
 		if ( newY >= 0 && newY < height )
 		{
-			final Hero foundedHero = find( lstHeroes, h -> h.positionY == newY && h.positionX == hero.positionX );
+			final Hero foundedHero = find(heroes, h -> h.positionY == newY && h.positionX == hero.positionX );
 			if ( foundedHero == null )
 				return newY;
 		}
@@ -133,11 +133,33 @@ public class Board {
 		return null;
 	}
 
-	void shootEnemy( Hero hero, Function<Hero, Boolean> enemyMatcher, Comparator<Hero> compare ) {
+	void shootEnemy(Function<Hero, Boolean> enemyMatcher, Comparator<Hero> compare ) {
 
 		final List<Hero> orderList = orderList( compare );
 		final Hero foundedHero = find( orderList, enemyMatcher );
 		if(foundedHero != null)
 			foundedHero.isAlive = false;
+	}
+
+	public void addHero() {
+		heroes.add(createHero());
+	}
+
+	Hero createHero() {
+		return (heroes.size() == 0) ?
+				new Hero(0, 0, Directions.Down) :
+				new Hero(height - 1, width - 1, Directions.Up);
+	}
+
+	public boolean hasEnoughPlayersToContinueTheGame() {
+		int qtHeroes = 0;
+		for(val hero : heroes){
+			if(hero.isAlive) qtHeroes++;
+		}
+		return qtHeroes > 1;
+	}
+
+	public static Board create(int size){
+		return new Board(new ArrayList<>(),size,size,1);
 	}
 }
