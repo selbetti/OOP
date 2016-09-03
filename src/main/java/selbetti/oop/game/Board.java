@@ -141,8 +141,10 @@ public class Board {
 			foundedHero.isAlive = false;
 	}
 
-	public void addHero() {
-		heroes.add(createHero());
+	public Hero addHero() {
+		val hero = createHero();
+		heroes.add(hero);
+		return hero;
 	}
 
 	Hero createHero() {
@@ -157,6 +159,10 @@ public class Board {
 			if(hero.isAlive) qtHeroes++;
 		}
 		return qtHeroes > 1;
+	}
+
+	public boolean isHeroAlive(int i) {
+		return heroes.get(i).isAlive;
 	}
 
 	public static Board create(int size){

@@ -8,17 +8,20 @@ import lombok.*;
 public class Game implements Runnable {
 
 	final Board board;
-	final List<Player> players;
+	final List<Player> players = new ArrayList<>();
 
 	final ExecutorService threads = Executors.newSingleThreadExecutor();
 
-	public void start() {
-		threads.execute(this);
+	public Future<?> start() {
+		return threads.submit(this);
 	}
 
 	@Override
 	@SneakyThrows
 	public void run() {
+		if (!board.hasEnoughPlayersToContinueTheGame())
+			throw new IllegalStateException("Not enough players to start the game, motha focka!");
+
 		while (board.hasEnoughPlayersToContinueTheGame()) {
 			play();
 			Thread.sleep(100);
@@ -38,7 +41,8 @@ public class Game implements Runnable {
 		board.addHero();
 	}
 
+
 	public static Game create(Board board) {
-		return new Game(board, new ArrayList<>());
+		return new Game(board);
 	}
 }
